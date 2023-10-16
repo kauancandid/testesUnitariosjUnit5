@@ -1,21 +1,21 @@
 package barriga.domain.infra.service;
 
-import barriga.domain.Usuario;
-import barriga.domain.builders.UsuarioBuilderM;
-import barriga.domain.infra.UsuarioDummyRepository;
+import barriga.domain.repository.UsuarioRepository;
 import barriga.domain.service.UsuarioService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 public class UsuarioServiceTest {
 
     private UsuarioService service;
 
     @Test
-    public void deveSalvarUsuarioComSucesso(){
-        service = new UsuarioService(new UsuarioDummyRepository());
-        Usuario user = UsuarioBuilderM.umUsuario().comId(null).comEmail("outro@gmail.com").agora();
-        Usuario saverUser = service.salvar(user);
-        Assertions.assertNotNull(saverUser.getId());
+    public void deveRetornarUsuarioPorEmail(){
+        UsuarioRepository repository = Mockito.mock(UsuarioRepository.class);
+        service = new UsuarioService(repository);
+        var user = service.getUserByEmail("user@gmail.com");
+        Assertions.assertTrue(user.isEmpty());
+
     }
 }
